@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2017-05-01 周一 20:57 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VLDB 2007 - EntityRank</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Weiming BAO" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="../css/worg.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">VLDB 2007 - EntityRank</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org55d2aca">1. Info.</a></li>
+<li><a href="#orgc64d942">2. Introduction</a></li>
+<li><a href="#org164197a">3. Challenge</a></li>
+<li><a href="#org287108f">4. Problem elaborationle Queries</a>
+<ul>
+<li><a href="#org4167847">4.1. Framework</a></li>
+<li><a href="#orgf0170a0">4.2. Requirements for Entity Ranking</a></li>
+</ul>
+</li>
+<li><a href="#org6b9c895">5. Impression Model - conceptual design</a></li>
+<li><a href="#org707a833">6. EntityRank - concrete design</a></li>
+<li><a href="#orge1f366d">7. System Prototype</a>
+<ul>
+<li><a href="#orgdbbf3d0">7.1. Implementation</a></li>
+<li><a href="#orgd079ae8">7.2. Qualitative Analysis</a></li>
+<li><a href="#org5ecd98f">7.3. Quantitative Evaluation</a></li>
+</ul>
+</li>
+<li><a href="#orgb39badf">8. Related Work</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org55d2aca" class="outline-2">
+<h2 id="org55d2aca"><span class="section-number-2">1</span> Info.</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Tao Cheng, Xifeng Yan, Kevin Chen-Chuan Chang: EntityRank: Searching Entities Directly and Holistically. VLDB 2007: 387-398
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc64d942" class="outline-2">
+<h2 id="orgc64d942"><span class="section-number-2">2</span> Introduction</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+This paper:
+</p>
+<ul class="org-ul">
+<li>covers <i>entity search</i> problem,</li>
+<li>formulates the framework and</li>
+<li><span class="underline">focus on <b>ranking entities</b>, particularly</span> &#x2014; combining global aggregation, local analysis and result verification</li>
+</ul>
+
+<p>
+Contribution:
+</p>
+<ul class="org-ul">
+<li>formulate the characteristics and requirements of entity search</li>
+<li>propose <b>Impression Model</b> and develop <b>EntityRank</b> scheme for entity ranking</li>
+<li>evaluate the prototype on 2TB Web corpus</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org164197a" class="outline-2">
+<h2 id="org164197a"><span class="section-number-2">3</span> Challenge</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Entity search is 
+</p>
+<ul class="org-ul">
+<li>contextual (matching by surrounding context),</li>
+<li>holistic (across multiple occurance over different pages),</li>
+<li>uncertain,</li>
+<li>associative (tell true association from accidental) and</li>
+<li>discriminative (emphasize popular source pages).</li>
+</ul>
+
+<p>
+Entity ranking is the centric issue.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org287108f" class="outline-2">
+<h2 id="org287108f"><span class="section-number-2">4</span> Problem elaborationle Queries</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>(amazon customer service #phone)</li>
+<li>ow(sigmod 2006 #pdf_ file #ppt_ file)</li>
+</ul>
+</div>
+
+<div id="outline-container-org4167847" class="outline-3">
+<h3 id="org4167847"><span class="section-number-3">4.1</span> Framework</h3>
+<div class="outline-text-3" id="text-4-1">
+<dl class="org-dl">
+<dt>Given</dt><dd>A collection of entities \(E=\{E_1,E_2,\cdots, E_N\}\) &#x2014; <b>tagged Web corpus</b></dd>
+<dt>Input</dt><dd>A query \(\beta -\alpha(K_1,K_2,\cdots, K_l,E_1,E_2,\cdots,E_m)\), composed of 
+<ul class="org-ul">
+<li>a sequence of keywords \(K_i\) and entities \(E_j\)</li>
+<li>the matching pattern \(\alpha\) <i>e.g.</i> \(\mathtt{ow}\) order-window</li>
+<li>the score measure \(\beta\) for the ranks of the matching instances</li>
+</ul></dd>
+<dt>Output</dt><dd>A list of tuples ranked by matching scores</dd>
+</dl>
+
+
+<p>
+The duplicated parts with <i>CIDR2007<sub>EntitySearchEngine</sub></i> are omitted. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf0170a0" class="outline-3">
+<h3 id="orgf0170a0"><span class="section-number-3">4.2</span> Requirements for Entity Ranking</h3>
+<div class="outline-text-3" id="text-4-2">
+<ul class="org-ul">
+<li>R-Contextual
+<ul class="org-ul">
+<li>pattern &#x2014; order or bias towards specific sequence pattern, <i>e.g.</i> Amazon 1-800-201-7575 eBay</li>
+<li>proximity &#x2014; the closer the keywords and the entity instances, the higher the probability</li>
+</ul></li>
+<li>R-Holistic &#x2014; aggregate all the occurances for association probability estimation</li>
+<li>R-Uncertainty &#x2014; extraction confidence probability must be captured</li>
+<li>R-Associative &#x2014; purify the association</li>
+<li>R-Discriminative &#x2014; popular pages should contribute more</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6b9c895" class="outline-2">
+<h2 id="org6b9c895"><span class="section-number-2">5</span> Impression Model - conceptual design</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Ideally visit each documents and collect all the evidence, store all the judgement (impression) and stop when sufficient impression is acquired.
+</p>
+
+<dl class="org-dl">
+<dt>access layer</dt><dd></dd>
+</dl>
+<p>
+at time \(\tau\), the observer accesses a document \(d^\tau\) from corpus \(D\), until statistical mean of the impressions will converge (impression stablizes)
+</p>
+
+<dl class="org-dl">
+<dt>recognition layer</dt><dd></dd>
+</dl>
+<p>
+assess if any potential tuple \(t\) occurs with association probability \(p(q(t)|d^\tau)\), where \(q(t)\) denotes a query tuple matching formed by tuple \(t\)
+</p>
+
+<p>
+Thus the final score is 
+\(Score(q(t)) = p(q(t)|D)\). (sufficient trial + sum = the whole corpus D)
+</p>
+
+<p>
+Naive materialization: equally view every document + use co-occurance frequency of entities and terms as query score
+</p>
+
+<p>
+\(\Longrightarrow\) only meets R-Holistic 
+</p>
+
+<p>
+No discrimination, not aware of uncertainty and conceptual patterns and lack validation layer.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org707a833" class="outline-2">
+<h2 id="org707a833"><span class="section-number-2">6</span> EntityRank - concrete design</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Add a vitual observer operates samely over a randomized D
+</p>
+
+<p>
+Three layers: access layer, recognition layer and newly-added validation layer
+</p>
+
+
+<div id="orga9bc4d3" class="figure">
+<p><img src="./img/VLDB-1.png" alt="VLDB-1.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>The complete framework of the impression model</p>
+</div>
+
+<dl class="org-dl">
+<dt>access layer</dt><dd></dd>
+</dl>
+<p>
+calculate p(d) adopting PageRank and aggregate for a tuple \(t\) over all the pages \(d_i\) it occurs, with each weighted by \(p(d_i)\)
+</p>
+
+<p>
+Discrimination can also be captured in this layer
+</p>
+
+<dl class="org-dl">
+<dt>recognition layer</dt><dd></dd>
+</dl>
+<p>
+obtain the observed probability \(p_o\) taking the maximum probability among all the object occurance (different entity/keywords combination) as \(p(q(t)|d)\)
+</p>
+
+<p>
+then two consideration are involved:
+</p>
+<ul class="org-ul">
+<li>Extraction uncertainty &#x2014; generated during entity extraction over the corpus and recorded in \(e_i.conf\)</li>
+<li><p>
+Association context &#x2014; how \(t\) matches \(q\) in the context of \(d\)? p<sub>context</sub>
+</p>
+
+<p>
+p<sub>context</sub> is the product of booean pattern constraint \(\alpha_B\) (fit or not, 1 or 0), and proximity function \(\alpha_P\) with a proposed span proximity model in the system
+</p>
+
+<p>
+span proximity model: define span as the shortest window that covers the entire entity occurance, whose length is denoted as \(s\), and a object occurance \(\gamma\)
+\[\alpha_P(\gamma) = p(\gamma |s) = p(s|\gamma)\]
+where we assume the prior probabilities \(p(\gamma)\) and \(p(s)\) are all the same
+</p></li>
+</ul>
+
+<p>
+patterns and span proximity model are some reasonable implementations, more sophisticated ones can also be adopted. <i>(discriminative model &#x2013; [11])</i>
+</p>
+
+<dl class="org-dl">
+<dt>validation layer</dt><dd></dd>
+</dl>
+<p>
+validate with the null hypothesis (the same operation on a randomized D) generating the randomized probability \(p_r\)
+</p>
+
+<p>
+randomize the dataset while preserving \(p(e_i\in d), p(k_i \in d), e_i.conf\)
+</p>
+
+<p>
+After randomization, conditional probabilities are actually independent. Given different span values are independent, for contextual probability, the average value is used.
+</p>
+
+<p>
+Simplefied G-test, given \(p_o,p_r << 1\). The higher the score, the more likely they are truly associated. 
+</p>
+
+<p>
+$Score(q(t)) &prop; p<sub>o&sdot;</sub> log\frac{p_o}{p_r}$$
+</p>
+
+<dl class="org-dl">
+<dt>implementation sketch</dt><dd></dd>
+</dl>
+
+<p>
+Indexing: standard inverted index, all occurance of each entity type is stored in an ordered list. 
+</p>
+
+<p>
+Search: \(p_r\) and PR can be done off-line, scalable on ordered-list operations
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge1f366d" class="outline-2">
+<h2 id="orge1f366d"><span class="section-number-2">7</span> System Prototype</h2>
+<div class="outline-text-2" id="text-7">
+</div><div id="outline-container-orgdbbf3d0" class="outline-3">
+<h3 id="orgdbbf3d0"><span class="section-number-3">7.1</span> Implementation</h3>
+<div class="outline-text-3" id="text-7-1">
+<p>
+engine &#x2014; Lemur IR Toolkit and adapted to entity indexing
+corpus &#x2014; Stanford WebBase Project
+entity extraction &#x2014; rule-driven (regular patterns <i>e.g. #phone, #email</i>) + dictionary-driven (enumerated keywords <i>e.g. #university, #professor</i>)
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd079ae8" class="outline-3">
+<h3 id="orgd079ae8"><span class="section-number-3">7.2</span> Qualitative Analysis</h3>
+<div class="outline-text-3" id="text-7-2">
+<p>
+Case studies on four senarios
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5ecd98f" class="outline-3">
+<h3 id="org5ecd98f"><span class="section-number-3">7.3</span> Quantitative Evaluation</h3>
+<div class="outline-text-3" id="text-7-3">
+<p>
+Compare accuracy with five other approaches
+</p>
+
+<p>
+query:
+</p>
+<ul class="org-ul">
+<li>top 30 company names in Fortune 500, 2006 with #phone,</li>
+<li>88 PC member name of SIGMOD 2007 with #email.</li>
+</ul>
+
+<p>
+measure &#x2014; mean reciprocal rank (approx 0.65, outperforming all the other approaches)
+</p>
+
+<p>
+relatively efficient both temporally (2.45s) and spacially (&lt;0.1% overall overhead)
+</p>
+
+<p>
+Elaborate the effectiveness of <i>global aggregation</i>, <i>local analysis</i>, <i>discriminative and associative factors</i> and <i>holistic analysis</i>, respectively.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb39badf" class="outline-2">
+<h2 id="orgb39badf"><span class="section-number-2">8</span> Related Work</h2>
+<div class="outline-text-2" id="text-8">
+<ul class="org-ul">
+<li>IE</li>
+<li>QA &#x2014; may overlap to some extent but different focus</li>
+<li>combining entity and relation for searching tasks</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Weiming BAO</p>
+<p class="date">Created: 2017-05-01 周一 20:57</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
